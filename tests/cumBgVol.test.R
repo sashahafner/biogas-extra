@@ -96,3 +96,14 @@ ggplot.2 <- ggplot(cum.prodcn, aes(time.d, cvCH4, colour = id)) +
 
 grid.arrange(ggplot.1, ggplot.2, ncol=1)
 
+
+# Cumulative data 'long' data structure
+TUMcum.prod <- cumBgVol(TUMvol, 
+                      id.name = "id", time.name = "time.h", 
+                      dat.name = "vol.mL", interval = FALSE, 
+                      extrap = TRUE)
+
+TUMcum.prodn <- cumBg(TUMvol, 
+                        id.name = "id", time.name = "time.h", 
+                        dat.name = "vol.mL", interval = FALSE, 
+                        extrap = TRUE)
