@@ -98,12 +98,14 @@ grid.arrange(ggplot.1, ggplot.2, ncol=1)
 
 
 # Cumulative data 'long' data structure
-TUMcum.prod <- cumBgVol(TUMvol, 
+TUMcum.prod <- cumBgVol(TUMvol,
                       id.name = "id", time.name = "time.h", 
-                      dat.name = "vol.mL", interval = FALSE, 
-                      extrap = TRUE)
+                      dat.name = "vol.mL", 
+                      interval = FALSE, extrap = TRUE)
 
 TUMcum.prodn <- cumBg(TUMvol, 
                         id.name = "id", time.name = "time.h", 
                         dat.name = "vol.mL", interval = FALSE, 
                         extrap = TRUE)
+
+all_equal(TUMcum.prod, TUMcum.prodn, convert = FALSE)
