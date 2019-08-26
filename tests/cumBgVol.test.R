@@ -1,16 +1,14 @@
+# For testing the biogas functions while writing help files
+# S. Hafner and Nanna Løjborg
+
 # Load data and functions
-#setwd() 
+# This command may be different for different users
+setwd('../biogas-GH/')
 
-#files <- list.files('biogas/R', full.names = TRUE)
-#for(i in files) source(i)
-
-#files <- list.files('biogas/data', full.names = TRUE)
-#for(j in files) load(j)
-
-files <- list.files("~/Dropbox/Civilingenior Kemi og Bioteknologi/3. Semester/R&D Project/GitHub/biogas/R", full.names = TRUE)
+files <- list.files('biogas/R', full.names = TRUE)
 for(i in files) source(i)
 
-files <- list.files("~/Dropbox/Civilingenior Kemi og Bioteknologi/3. Semester/R&D Project/GitHub/biogas/data", full.names = TRUE)
+files <- list.files('biogas/data', full.names = TRUE)
 for(j in files) load(j)
 
 # Required packages
@@ -104,8 +102,23 @@ TUMcum.prod <- cumBgVol(TUMvol,
                       interval = FALSE, extrap = TRUE)
 
 TUMcum.prodn <- cumBg(TUMvol, 
-                        id.name = "id", time.name = "time.h", 
-                        dat.name = "vol.mL", interval = FALSE, 
-                        extrap = TRUE)
+                      id.name = "id", time.name = "time.h", 
+                      dat.name = "vol.mL", 
+                      interval = FALSE, extrap = TRUE)
 
 all_equal(TUMcum.prod, TUMcum.prodn, convert = FALSE)
+
+
+# Interval data 'long' data structure
+DBFZcum.prod <- cumBgVol(DBFZfeedVol,
+                      id.name = "id", time.name = "time.d", 
+                      dat.name = "vol.mL", 
+                      extrap = TRUE)
+
+DBFZcum.prodn <- cumBg(DBFZfeedVol, 
+                      id.name = "id", time.name = "time.d", 
+                      dat.name = "vol.mL", 
+                      extrap = TRUE)
+
+all_equal(DBFZcum.prod, DBFZcum.prodn, convert = FALSE)
+
