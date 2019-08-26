@@ -1,4 +1,4 @@
-# Adds time (days) column, makes some other changes, then creates CSV files
+# Sort data and then creates CSV files
 # Nanna Løjborg and Sasha D. Hafner
 # 26 August 2019
 
