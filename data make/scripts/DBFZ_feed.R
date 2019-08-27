@@ -16,7 +16,9 @@ names(setup)[names(setup) == "Bottle key"] <- "id"
 names(setup)[names(setup) == "Inoculum mass (g)"] <- "m.inoc"
 names(setup)[names(setup) == "Substrate VS mass (g)"] <- "m.sub.vs"
 
-setup <- setNames(setup, tolower(names(setup[1:5])))
+setup <- setNames(setup, tolower(names(setup)))
+
+setup$'bottle id' <- paste(setup$id, setup$substrate)
 
 setup
 
@@ -29,9 +31,9 @@ setup <- setup[ , c('id', 'substrate', 'm.inoc', 'm.sub.vs')]
 class(setup)
 setup <- as.data.frame(setup)
 
-DFFZfeedSetup <- setup
+DBFZfeedSetup <- setup
 
-save(DFFZfeedSetup, file = '../output rda/DFFZfeedSetup.rda')
+save(DBFZfeedSetup, file = '../output rda/DBFZfeedSetup.rda')
 
 
 # Volume
@@ -41,6 +43,10 @@ class(vol)
 vol <- as.data.frame(vol)
 
 vol <- gather(vol, c("1":"12"), key = "id", value = "vol.mL")
+
+vol <- merge(vol, setup, by = "id")
+
+vol <- vol[ , c('bottle id', 'time.d', 'vol.mL')]
 
 # Make csv file
 write.csv(vol, '../output csv/DBFZ_feed_vol.csv', row.names = FALSE)
