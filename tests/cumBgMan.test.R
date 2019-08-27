@@ -58,3 +58,26 @@ ggplot.2 <- ggplot(cum.prodl, aes(time, cvCH4, colour = bottle)) +
 
 grid.arrange(ggplot.1, ggplot.2, ncol=1)
 
+
+# Sludge data
+# cumBgMan()
+# NTS: Currently, 'longcombo' data requires comp to be stated as comp = comp. If not stated, this will result in removal of CH4 calculations and message according missing comp and comp.name.
+cum.prodc.man <- cumBgMan(UQsludgePres, temp = 30, data.struct = 'longcombo', comp = comp,
+                          id.name = "bottle id", time.name = "time.d", 
+                          dat.name = "pres", comp.name = 'xCH4',
+                          temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,
+                          headspace = UQsludgeSetup, vol.hs.name = "vol.hs",
+                          pres.amb = 101.3, absolute = FALSE,
+                          extrap = TRUE, addt0 = TRUE)
+# cumBg()
+cum.prodc <- cumBg(UQsludgePres, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
+                          id.name = "bottle id", time.name = "time.d", 
+                          dat.name = "pres", comp.name = 'xCH4',
+                          temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,
+                          headspace = UQsludgeSetup, vol.hs.name = "vol.hs",
+                          pres.amb = 101.3, absolute = FALSE,
+                          extrap = TRUE, addt0 = TRUE)
+
+# Compare results from cumBgMan() and cumBg()
+all_equal(cum.prodc.man, cum.prodc, ignore_col_order = FALSE,
+          ignore_row_order = FALSE, convert = FALSE)

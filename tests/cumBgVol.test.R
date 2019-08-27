@@ -19,7 +19,7 @@ library(dplyr)
 
 # cumBgVol tests
 # longcombo data structure
-cpc <- cumBgVol(s3lcombo, temp = 25, pres = 1,
+cpc <- cumBgVol(s3lcombo, comp = comp, temp = 25, pres = 1,
              id.name = 'id', time.name = 'time.d',
              data.struct = 'longcombo',
              dat.name = 'vol.ml', comp.name = 'xCH4',
@@ -65,7 +65,7 @@ all_equal(cum.prodln, cum.prodl, ignore_col_order = FALSE,
 
 # longcombo data structure
 # cumBgVol()
-cum.prodc <- cumBgVol(s3lcombo, temp = 25, pres = 1, 
+cum.prodc <- cumBgVol(s3lcombo, comp = comp, temp = 25, pres = 1, 
                      id.name = 'id', time.name = 'time.d', 
                      data.struct = 'longcombo', dat.name = 'vol.ml', 
                      comp.name = 'xCH4', extrap = TRUE)
