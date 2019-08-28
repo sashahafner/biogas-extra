@@ -22,19 +22,6 @@ setup$'bottle id' <- paste(setup$id, setup$substrate)
 
 setup
 
-# Make csv file
-write.csv(setup, '../output csv/DBFZ_feed_setup.csv', row.names = FALSE)
-
-# Make rda file
-setup <- setup[ , c('id', 'substrate', 'm.inoc', 'm.sub.vs')]
-
-class(setup)
-setup <- as.data.frame(setup)
-
-DBFZfeedSetup <- setup
-
-save(DBFZfeedSetup, file = '../output rda/DBFZfeedSetup.rda')
-
 
 # Volume
 vol <- read_excel('../data/DBFZ_feed.xlsx', sheet = 2)
@@ -48,10 +35,27 @@ vol <- merge(vol, setup, by = "id")
 
 vol <- vol[ , c('bottle id', 'time.d', 'vol.mL')]
 
-# Make csv file
+
+names(setup)[names(setup) == "bottle id"] <- "id"
+names(vol)[names(vol) == "bottle id"] <- "id"
+
+# Make csv files
+write.csv(setup, '../output csv/DBFZ_feed_setup.csv', row.names = FALSE)
+
 write.csv(vol, '../output csv/DBFZ_feed_vol.csv', row.names = FALSE)
 
 # Make rda file
+# Setup
+setup <- setup[ , c('id', 'm.inoc', 'm.sub.vs')]
+
+class(setup)
+setup <- as.data.frame(setup)
+
+DBFZfeedSetup <- setup
+
+save(DBFZfeedSetup, file = '../output rda/DBFZfeedSetup.rda')
+
+# Vol
 DBFZfeedVol <- vol
 
 save(DBFZfeedVol, file = '../output rda/DBFZfeedVol.rda')
