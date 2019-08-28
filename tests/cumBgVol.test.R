@@ -3,7 +3,9 @@
 
 # Load data and functions
 # This command may be different for different users
-setwd('../biogas-GH/')
+setwd('../../biogas-GH/')
+
+options(width = 70)
 
 files <- list.files('biogas/R', full.names = TRUE)
 for(i in files) source(i)
