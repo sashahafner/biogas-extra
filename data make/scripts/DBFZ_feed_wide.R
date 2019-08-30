@@ -1,6 +1,6 @@
 # Sort data and then creates CSV files
 # Nanna Løjborg and Sasha D. Hafner
-# 26 August 2019
+# 30 August 2019
 
 library(plyr)
 library(readxl)
@@ -27,20 +27,12 @@ vol <- read_excel('../data/DBFZ_feed.xlsx', sheet = 2)
 class(vol)
 vol <- as.data.frame(vol)
 
-vol <- gather(vol, c("1":"12"), key = "id", value = "vol.mL")
-
-vol <- merge(vol, setup, by = "id")
-
-colnames(vol)
-names(vol)[names(vol) == "vol.mL"] <- "vol"
-
-vol <- vol[ , c('id', 'time.d', 'vol')]
-
+vol
 
 # Make csv files
-write.csv(setup, '../output csv/DBFZ_feed_setup.csv', row.names = FALSE)
+write.csv(setup, '../output csv/DBFZ_feed_setup_w.csv', row.names = FALSE)
 
-write.csv(vol, '../output csv/DBFZ_feed_vol.csv', row.names = FALSE)
+write.csv(vol, '../output csv/DBFZ_feed_vol_w.csv', row.names = FALSE)
 
 # Make rda file
 # Setup
@@ -49,11 +41,13 @@ setup <- setup[ , c('id', 'm.inoc', 'm.sub.vs')]
 class(setup)
 setup <- as.data.frame(setup)
 
-DBFZfeedSetup <- setup
+DBFZfeedSetupW <- setup
 
-save(DBFZfeedSetup, file = '../output rda/DBFZfeedSetup.rda')
+save(DBFZfeedSetupW, file = '../output rda/DBFZfeedSetupW.rda')
 
 # Vol
-DBFZfeedVol <- vol
+DBFZfeedVolW <- vol
 
-save(DBFZfeedVol, file = '../output rda/DBFZfeedVol.rda')
+save(DBFZfeedVolW, file = '../output rda/DBFZfeedVolW.rda')
+
+
