@@ -100,12 +100,12 @@ grid.arrange(ggplot.1, ggplot.2, ncol=1)
 # Cumulative 'long' structure data
 TUMcum.prod <- cumBgVol(TUMvol, comp = 1, temp = 0, pres = 1,
                       id.name = "id", time.name = "time.h", 
-                      dat.name = "vol.mL", 
+                      dat.name = "vol.mL", dry = TRUE, 
                       interval = FALSE)
 
 TUMcum.prodn <- cumBg(TUMvol, comp = 1, temp = 0, pres = 1,
                       id.name = "id", time.name = "time.h", 
-                      dat.name = "vol.mL", 
+                      dat.name = "vol.mL", dry = TRUE,
                       interval = FALSE)
 
 all_equal(TUMcum.prod, TUMcum.prodn, convert = FALSE)
@@ -114,12 +114,12 @@ all_equal(TUMcum.prod, TUMcum.prodn, convert = FALSE)
 # Cumulative 'long' structure data
 DBFZcum.prod <- cumBgVol(DBFZfeedVol, comp = 1, temp = 0, pres = 1,
                       id.name = "id", time.name = "time.d", 
-                      dat.name = "vol", 
+                      dat.name = "vol", dry = TRUE,
                       interval = FALSE)
 
 DBFZcum.prodn <- cumBg(DBFZfeedVol, comp = 1, temp = 0, pres = 1,
                       id.name = "id", time.name = "time.d", 
-                      dat.name = "vol", 
+                      dat.name = "vol", dry = TRUE,
                       interval = FALSE)
 
 all_equal(DBFZcum.prod, DBFZcum.prodn, convert = FALSE)
@@ -128,7 +128,8 @@ all_equal(DBFZcum.prod, DBFZcum.prodn, convert = FALSE)
 DBFZcum.w.prod <- cumBgVol(DBFZfeedVolW, comp = 1, temp = 0, pres = 1,
                 time.name = 'time.d',
                 data.struct = 'wide',
-                dat.name = '1', 
+                dat.name = '1',
+                dry = TRUE,
                 interval = FALSE)
 
 all_equal(DBFZcum.prod, DBFZcum.w.prod, convert = TRUE)
