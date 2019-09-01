@@ -51,6 +51,11 @@ names(pressure)[names(pressure) == "time (d)"] <- "time.d"
 
 pressure <- pressure[ , c('bottle id', 'time.d', 'pres', 'xCH4')]
 
+# Merge pressure and setup data frame to introduce 'id' column in pressure
+pressure <- merge(pressure, setup, by = "bottle id")
+
+pressure <- pressure[ , c('id', 'time.d', 'pres', 'xCH4')]
+
 pressure
 
 # Convert to pressure from mbar to kPa 
@@ -84,6 +89,7 @@ names(mass)[names(mass) == "final mass (g)"] <- "mass.final"
 names(mass)[names(mass) == "xch4"] <- "xCH4"
 names(mass)[names(mass) == "time (d)"] <- "time.d"
 
+# Merge mass and setup data frame to introduce 'id' column in mass
 mass <- merge(mass, setup, by = "bottle id")
 
 mass <- mass[ , c('id', 'time.d', 'mass.init', 'mass.final', 'xCH4')]
