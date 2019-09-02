@@ -86,13 +86,13 @@ all_equal(cum.prodc.man, cum.prodc, ignore_col_order = FALSE,
 ggplot.1 <- ggplot(cum.prodc.man, aes(time.d, cvCH4, colour = id)) + 
   geom_point() +
   geom_line(aes(group = id)) +
-  labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle no.")  + 
+  labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle id")  + 
   theme_bw() 
 
 ggplot.2 <- ggplot(cum.prodc, aes(time.d, cvCH4, colour = id)) + 
   geom_point() +
   geom_line(aes(group = id)) +
-  labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle no.")  + 
+  labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle id")  + 
   theme_bw() 
 
 grid.arrange(ggplot.1, ggplot.2, ncol=1)

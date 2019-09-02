@@ -56,13 +56,13 @@ pressure <- merge(pressure, setup, by = "bottle id")
 
 pressure <- pressure[ , c('id', 'time.d', 'pres', 'xCH4')]
 
-pressure
+head(pressure)
 
 # Convert to pressure from mbar to kPa 
 pressure$pres <- pressure$pres*0.1
 
-# Add residual pressure. Assumed to be atmospheric
-pressure$pres.resid <- 101.3
+# Add residual pressure (gauge). Assumed to be atmospheric.
+pressure$pres.resid <- 0
 
 
 # Make csv file
