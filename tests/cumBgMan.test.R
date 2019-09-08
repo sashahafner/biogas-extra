@@ -18,6 +18,7 @@ library(dplyr)
 
 # cumBgMan() test 'long' data structure
 cum.prodl.man <- cumBgMan(strawPressure, comp = strawComp, temp = 31,
+                     data.struct = 'long',
                      id.name = "bottle", time.name = "time", 
                      dat.name = "pres", comp.name = "xCH4",
                      temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0.0,
@@ -62,7 +63,7 @@ grid.arrange(ggplot.1, ggplot.2, ncol=1)
 # Sludge data. Longcombo data structure.
 # cumBgMan()
 # NTS: Currently, 'longcombo' data requires comp to be stated as comp = comp. If not stated, this will result in removal of CH4 calculations and message according missing comp and comp.name.
-cum.prodc.man <- cumBgMan(UQsludgePres, temp = 30, data.struct = 'longcombo', comp = comp,
+cum.prodc.man <- cumBgMan(sludgeTwoBiogasPres, temp = 30, comp = comp,
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4',
                           temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,

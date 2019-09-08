@@ -23,7 +23,6 @@ library(dplyr)
 # longcombo data structure
 cpc <- cumBgVol(s3lcombo, comp = comp, temp = 25, pres = 1,
              id.name = 'id', time.name = 'time.d',
-             data.struct = 'longcombo',
              dat.name = 'vol.ml', comp.name = 'xCH4',
              extrap = TRUE)
 
@@ -36,6 +35,7 @@ cpw <- cumBgVol(s3volw, comp = s3compw, temp = 25, pres = 1,
 
 # long data structure
 cpl <- cumBgVol(s3lcombo, comp = s3compl, temp = 25, pres = 1,
+             data.struct = 'long',
              id.name = 'id', time.name = 'time.d',
              dat.name = 'vol.ml', comp.name = 'xCH4',
              extrap = TRUE)
@@ -48,7 +48,8 @@ head(cpl)
 # Compare results from cumBgVol() and cumBg()
 # long data structure 
 # cumBgVol()
-cum.prodl <- cumBgVol(vol2, comp = comp2, temp = 20, pres = 1, 
+cum.prodl <- cumBgVol(vol2, comp = comp2, temp = 20, pres = 1,
+                     data.struct = 'long',
                      id.name = "bottle", time.name = "days", 
                      dat.name = "meas.vol", comp.name = "CH4.conc", 
                      extrap = TRUE)
@@ -69,7 +70,7 @@ all_equal(cum.prodln, cum.prodl, ignore_col_order = FALSE,
 # cumBgVol()
 cum.prodc <- cumBgVol(s3lcombo, comp = comp, temp = 25, pres = 1, 
                      id.name = 'id', time.name = 'time.d', 
-                     data.struct = 'longcombo', dat.name = 'vol.ml', 
+                     dat.name = 'vol.ml', 
                      comp.name = 'xCH4', extrap = TRUE)
 
 # cumBg()
@@ -97,40 +98,20 @@ ggplot.2 <- ggplot(cum.prodcn, aes(time.d, cvCH4, colour = id)) +
 grid.arrange(ggplot.1, ggplot.2, ncol=1)
 
 
-# Cumulative 'long' structure data
-TUMcum.prod <- cumBgVol(TUMvol, comp = 1, temp = 0, pres = 1,
-                      id.name = "id", time.name = "time.h", 
-                      dat.name = "vol.mL", dry = TRUE, 
-                      interval = FALSE)
-
-TUMcum.prodn <- cumBg(TUMvol, comp = 1, temp = 0, pres = 1,
-                      id.name = "id", time.name = "time.h", 
-                      dat.name = "vol.mL", dry = TRUE,
-                      interval = FALSE)
-
-all_equal(TUMcum.prod, TUMcum.prodn, convert = FALSE)
-
-
-# Cumulative 'long' structure data
-DBFZcum.prod <- cumBgVol(DBFZfeedVol, comp = 1, temp = 0, pres = 1,
-                      id.name = "id", time.name = "time.d", 
-                      dat.name = "vol", dry = TRUE,
-                      interval = FALSE)
-
-DBFZcum.prodn <- cumBg(DBFZfeedVol, comp = 1, temp = 0, pres = 1,
-                      id.name = "id", time.name = "time.d", 
-                      dat.name = "vol", dry = TRUE,
-                      interval = FALSE)
-
-all_equal(DBFZcum.prod, DBFZcum.prodn, convert = FALSE)
-
 # Cumulative 'wide' structure data
-DBFZcum.w.prod <- cumBgVol(DBFZfeedVolW, comp = 1, temp = 0, pres = 1,
+DBFZcum.w.prod <- cumBgVol(feedVol, comp = 1, temp = 0, pres = 1,
                 time.name = 'time.d',
                 data.struct = 'wide',
                 dat.name = '1',
                 dry = TRUE,
                 interval = FALSE)
 
-all_equal(DBFZcum.prod, DBFZcum.w.prod, convert = TRUE)
+DBFZcum.w.prodn <- cumBg(feedVol, comp = 1, temp = 0, pres = 1,
+                           time.name = 'time.d',
+                           data.struct = 'wide',
+                           dat.name = '1',
+                           dry = TRUE,
+                           interval = FALSE)
+
+all_equal(DBFZcum.w.prod, DBFZcum.w.prodn, convert = TRUE)
 

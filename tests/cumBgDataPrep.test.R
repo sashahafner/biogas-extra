@@ -23,12 +23,12 @@ cdpw <- cumBgDataPrep(s3volw, comp = s3compw, temp = 25, pres = 1,
 
 cdpc <- cumBgDataPrep(s3lcombo, temp = 25, pres = 1,
                       id.name = 'id', time.name = 'time.d',
-                      data.struct = 'longcombo',
                       dat.name = 'vol.ml', comp.name = 'xCH4',
                       extrap = TRUE)
 
 cdpl <- cumBgDataPrep(s3lcombo, comp = s3compl, temp = 25, pres = 1,
                       id.name = 'id', time.name = 'time.d',
+                      data.struct = 'long',
                       dat.name = 'vol.ml', comp.name = 'xCH4',
                       extrap = TRUE)
 

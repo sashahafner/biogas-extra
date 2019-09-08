@@ -30,9 +30,9 @@ vol <- as.data.frame(vol)
 vol
 
 # Make csv files
-write.csv(setup, '../output csv/DBFZ_feed_setup_w.csv', row.names = FALSE)
+write.csv(setup, '../output csv/feedSetup.csv', row.names = FALSE)
 
-write.csv(vol, '../output csv/DBFZ_feed_vol_w.csv', row.names = FALSE)
+write.csv(vol, '../output csv/feedVol.csv', row.names = FALSE)
 
 # Make rda file
 # Setup
@@ -41,13 +41,13 @@ setup <- setup[ , c('id', 'm.inoc', 'm.sub.vs')]
 class(setup)
 setup <- as.data.frame(setup)
 
-DBFZfeedSetupW <- setup
+feedSetup <- setup
 
-save(DBFZfeedSetupW, file = '../output rda/DBFZfeedSetupW.rda')
+save(feedSetup, file = '../output rda/feedSetup.rda')
 
 # Vol
-DBFZfeedVolW <- vol
+feedVol <- vol
 
-save(DBFZfeedVolW, file = '../output rda/DBFZfeedVolW.rda')
+save(feedVol, file = '../output rda/feedVol.rda')
 
 

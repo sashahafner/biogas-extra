@@ -27,15 +27,15 @@ setup <- setup[ , c('bottle id', 'id', 'm.inoc', 'm.sub.vs', 'vol.hs')]
 setup
 
 # Make csv file
-write.csv(setup, '../output csv/UQsludgeSetup.csv', row.names = FALSE)
+write.csv(setup, '../output csv/sludgeTwoBiogasSetup.csv', row.names = FALSE)
 
 # Make rda file
 class(setup)
 setup <- as.data.frame(setup)
 
-UQsludgeSetup <- setup
+sludgeTwoBiogasSetup <- setup
 
-save(UQsludgeSetup, file = '../output rda/UQsludgeSetup.rda')
+save(sludgeTwoBiogasSetup, file = '../output rda/sludgeTwoBiogasSetup.rda')
 
 
 ## Pressure
@@ -66,15 +66,15 @@ pressure$pres.resid <- 0
 
 
 # Make csv file
-write.csv(pressure, '../output csv/UQsludgePres.csv', row.names = FALSE)
+write.csv(pressure, '../output csv/sludgeTwoBiogasPres.csv', row.names = FALSE)
 
 # Make rda file
 class(pressure)
 pressure <- as.data.frame(pressure)
 
-UQsludgePres <- pressure
+sludgeTwoBiogasPres <- pressure
 
-save(UQsludgePres, file = '../output rda/UQsludgePres.rda')
+save(sludgeTwoBiogasPres, file = '../output rda/sludgeTwoBiogasPres.rda')
 
 
 ## Mass
@@ -101,12 +101,12 @@ mass$mass <- mass$mass.init - mass$mass.final
 mass <- na.omit(mass)
 
 # Make csv file
-write.csv(mass, '../output csv/UQsludgeMass.csv', row.names = FALSE)
+write.csv(mass, '../output csv/sludgeTwoBiogasMass.csv', row.names = FALSE)
 
 # Make rda file
 class(mass)
 
-UQsludgeMass <- mass
+sludgeTwoBiogasMass <- mass
 
-save(UQsludgeMass, file = '../output rda/UQsludgeMass.rda')
+save(sludgeTwoBiogasMass, file = '../output rda/sludgeTwoBiogasMass.rda')
 
