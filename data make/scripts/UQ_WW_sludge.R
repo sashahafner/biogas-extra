@@ -33,9 +33,9 @@ write.csv(setup, '../output csv/sludgeTwoBiogasSetup.csv', row.names = FALSE)
 class(setup)
 setup <- as.data.frame(setup)
 
-sludgeTwoBiogasSetup <- setup
+sludgeTwoSetup <- setup
 
-save(sludgeTwoBiogasSetup, file = '../output rda/sludgeTwoBiogasSetup.rda')
+save(sludgeTwoSetup, file = '../output rda/sludgeTwoSetup.rda')
 
 
 ## Pressure

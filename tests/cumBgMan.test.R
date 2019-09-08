@@ -67,7 +67,7 @@ cum.prodc.man <- cumBgMan(sludgeTwoBiogasPres, temp = 30, comp = comp,
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4',
                           temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,
-                          headspace = UQsludgeSetup, vol.hs.name = "vol.hs",
+                          headspace = SludgeTwoBiogasSetup, vol.hs.name = "vol.hs",
                           pres.amb = 101.3, absolute = FALSE,
                           extrap = TRUE, addt0 = TRUE)
 # cumBg()
