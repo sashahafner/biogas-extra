@@ -67,17 +67,19 @@ cum.prodc.man <- cumBgMan(sludgeTwoBiogasPres, temp = 30, comp = comp,
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4',
                           temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,
-                          headspace = SludgeTwoBiogasSetup, vol.hs.name = "vol.hs",
+                          headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 101.3, absolute = FALSE,
-                          extrap = TRUE, addt0 = TRUE)
+                          extrap = TRUE, addt0 = TRUE, 
+                          unit.pres = "kPa")
 # cumBg()
-cum.prodc <- cumBg(UQsludgePres, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
+cum.prodc <- cumBg(sludgeTwoBiogasPres, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4',
                           temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,
-                          headspace = UQsludgeSetup, vol.hs.name = "vol.hs",
+                          headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 101.3, absolute = FALSE,
-                          extrap = TRUE, addt0 = TRUE)
+                          extrap = TRUE, addt0 = TRUE, 
+                          unit.pres = "kPa")
 
 # Compare results from cumBgMan() and cumBg()
 all_equal(cum.prodc.man, cum.prodc, ignore_col_order = FALSE,
