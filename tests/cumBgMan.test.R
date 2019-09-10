@@ -23,8 +23,9 @@ cum.prodl.man <- cumBgMan(strawPressure, comp = strawComp, temp = 31,
                      dat.name = "pres", comp.name = "xCH4",
                      temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0.0,
                      headspace = strawSetup, vol.hs.name = "headspace",
-                     pres.amb = 1.01, absolute = FALSE,
-                     extrap = TRUE, addt0 = TRUE)
+                     pres.amb = 101.3, absolute = FALSE,
+                     extrap = TRUE, addt0 = TRUE,
+                     unit.pres = "kPa")
 
 head(cum.prodl.man)
 
@@ -34,9 +35,9 @@ cum.prodl <- cumBg(strawPressure, dat.type = "pres", comp = strawComp, temp = 31
       dat.name = "pres", comp.name = "xCH4",
       temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0.0,
       headspace = strawSetup, vol.hs.name = "headspace",
-      pres.amb = 1.01, absolute = FALSE,
-      extrap = TRUE,
-      addt0 = TRUE)
+      pres.amb = 101.3, absolute = FALSE,
+      extrap = TRUE, addt0 = TRUE,
+      unit.pres = "kPa")
 
 head(cum.prodl)
 
