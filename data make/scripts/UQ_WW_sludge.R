@@ -1,6 +1,5 @@
-# Sort data and then creates CSV files
+# Sort data and then creates rda and CSV files
 # Nanna Løjborg and Sasha D. Hafner
-# 26 August 2019
 
 ### Longcombo
 
@@ -9,104 +8,72 @@ library(readxl)
 library(tidyr)
 
 ## Setup
-setup <- read_excel('../data/UQ_WW_sludge.xlsx', sheet = 1)
+setup <- as.data.frame(read_excel('../data/UQ_WW_sludge.xlsx', sheet = 1))
 
-colnames(setup)
+names(setup) <- tolower(names(setup))
 
-setup <- setNames(setup, tolower(names(setup)))
-
+names(setup)[names(setup) == "bottle id"] <- "id"
 names(setup)[names(setup) == "inoculum (g)"] <- "m.inoc"
+names(setup)[names(setup) == "description"] <- "descrip"
 names(setup)[names(setup) == "substrate vs mass (g)"] <- "m.sub.vs"
 names(setup)[names(setup) == "total (g)"] <- "m.tot"
 names(setup)[names(setup) == "headspace (ml)"] <- "vol.hs"
 
-setup$id <- paste(setup$'bottle id', setup$description)
+#setup$id <- paste(setup$'bottle id', setup$description)
 
-setup <- setup[ , c('bottle id', 'id', 'm.inoc', 'm.sub.vs', 'vol.hs')]
+# Select columns
+setup <- setup[ , c('id', 'descrip', 'vol.hs', 'm.inoc', 'm.sub.vs')]
 
-setup
+# Drop duplicate conditions (b)
+setup <- setup[setup$id < 22, ]
 
 # Make csv file
-write.csv(setup, '../output csv/sludgeTwoBiogasSetup.csv', row.names = FALSE)
+write.csv(setup, '../output csv/sludgeTwoSetup.csv', row.names = FALSE)
 
 # Make rda file
 class(setup)
-setup <- as.data.frame(setup)
 
 sludgeTwoSetup <- setup
 
 save(sludgeTwoSetup, file = '../output rda/sludgeTwoSetup.rda')
 
 
-## Pressure
-pressure <- read_excel('../data/UQ_WW_sludge.xlsx', sheet = 2)
+## Biogas
+biogas <- as.data.frame(read_excel('../data/UQ_WW_sludge.xlsx', sheet = 2))
 
-colnames(pressure)
+names(biogas)
 
-pressure <- setNames(pressure, tolower(names(pressure)))
+biogas <- setNames(biogas, tolower(names(biogas)))
 
-names(pressure)[names(pressure) == "pressure (mbar)"] <- "pres"
-names(pressure)[names(pressure) == "xch4"] <- "xCH4"
-names(pressure)[names(pressure) == "time (d)"] <- "time.d"
+names(biogas)[names(biogas) == "bottle id"] <- "id"
+names(biogas)[names(biogas) == "pressure (mbar)"] <- "pres"
+names(biogas)[names(biogas) == "methane (%)"] <- "xCH4"
+names(biogas)[names(biogas) == "co2(%)"] <- "xCO2"
+names(biogas)[names(biogas) == "xch4"] <- "xCH4n"
+names(biogas)[names(biogas) == "time (d)"] <- "time.d"
+names(biogas)[names(biogas) == "initial mass (g)"] <- "mass.init"
+names(biogas)[names(biogas) == "final mass (g)"] <- "mass.final"
 
-pressure <- pressure[ , c('bottle id', 'time.d', 'pres', 'xCH4')]
+biogas <- biogas[ , c('id', 'time.d', 'pres', 'mass.init', 'mass.final', 'xCH4', 'xCO2', 'xCH4n')]
 
-# Merge pressure and setup data frame to introduce 'id' column in pressure
-pressure <- merge(pressure, setup, by = "bottle id")
+biogas$xCH4 <- biogas$xCH4/100
+biogas$xCO2 <- biogas$xCO2/100
 
-pressure <- pressure[ , c('id', 'time.d', 'pres', 'xCH4')]
+## Convert pressure from mbar to kPa 
+#biogas$pres <- biogas$pres*0.1
 
-head(pressure)
+# Fill in first initial mass
+biogas[biogas$time.d == 0, 'mass.init'] <- biogas[biogas$time.d == 0, 'mass.final']
+biogas[biogas$time.d == 0, 'xCH4n'] <- 0
 
-# Convert to pressure from mbar to kPa 
-pressure$pres <- pressure$pres*0.1
-
-# Add residual pressure (gauge). Assumed to be atmospheric.
-pressure$pres.resid <- 0
-
-
-# Make csv file
-write.csv(pressure, '../output csv/sludgeTwoBiogasPres.csv', row.names = FALSE)
-
-# Make rda file
-class(pressure)
-pressure <- as.data.frame(pressure)
-
-sludgeTwoBiogasPres <- pressure
-
-save(sludgeTwoBiogasPres, file = '../output rda/sludgeTwoBiogasPres.rda')
-
-
-## Mass
-mass <- read_excel('../data/UQ_WW_sludge.xlsx', sheet = 2)
-
-colnames(mass)
-
-mass <- setNames(mass, tolower(names(mass)))
-
-names(mass)[names(mass) == "initial mass (g)"] <- "mass.init"
-names(mass)[names(mass) == "final mass (g)"] <- "mass.final"
-names(mass)[names(mass) == "xch4"] <- "xCH4"
-names(mass)[names(mass) == "time (d)"] <- "time.d"
-
-# Merge mass and setup data frame to introduce 'id' column in mass
-mass <- merge(mass, setup, by = "bottle id")
-
-mass <- mass[ , c('id', 'time.d', 'mass.init', 'mass.final', 'xCH4')]
-
-mass
-
-mass$mass <- mass$mass.init - mass$mass.final
-
-mass <- na.omit(mass)
+# Drop duplicate conditions (b)
+biogas <- biogas[biogas$id < 22, ]
 
 # Make csv file
-write.csv(mass, '../output csv/sludgeTwoBiogasMass.csv', row.names = FALSE)
+write.csv(biogas, '../output csv/sludgeTwoBiogas.csv', row.names = FALSE)
 
 # Make rda file
-class(mass)
+sludgeTwoBiogas <- biogas
 
-sludgeTwoBiogasMass <- mass
-
-save(sludgeTwoBiogasMass, file = '../output rda/sludgeTwoBiogasMass.rda')
+save(sludgeTwoBiogas, file = '../output rda/sludgeTwoBiogas.rda')
 
