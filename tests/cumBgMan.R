@@ -3,7 +3,8 @@
 
 # Load data and functions
 # This command may be different for different users
-setwd('../biogas-GH/')
+#setwd('../biogas-GH/')
+setwd('../../biogas-package-GH/')
 
 files <- list.files('biogas/R', full.names = TRUE)
 for(i in files) source(i)
@@ -46,13 +47,13 @@ all_equal(cum.prodl.man, cum.prodl, ignore_col_order = FALSE,
           ignore_row_order = FALSE, convert = FALSE)
 
 # Plot results
-ggplot.1 <- ggplot(cum.prodl.man, aes(time, cvCH4, colour = bottle)) + 
+ggplot.1 <- ggplot(cum.prodl.man, aes(time, cvCH4, colour = factor(bottle))) + 
   geom_point() +
   geom_line(aes(group = bottle)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle no.")  + 
   theme_bw() 
 
-ggplot.2 <- ggplot(cum.prodl, aes(time, cvCH4, colour = bottle)) + 
+ggplot.2 <- ggplot(cum.prodl, aes(time, cvCH4, colour = factor(bottle))) + 
   geom_point() +
   geom_line(aes(group = bottle)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle no.")  + 
@@ -63,37 +64,38 @@ grid.arrange(ggplot.1, ggplot.2, ncol=1)
 
 # Sludge data. Longcombo data structure.
 # cumBgMan()
-# NTS: Currently, 'longcombo' data requires comp to be stated as comp = comp. If not stated, this will result in removal of CH4 calculations and message according missing comp and comp.name.
-cum.prodc.man <- cumBgMan(sludgeTwoBiogasPres, temp = 30, comp = comp,
+cum.prodc.man <- cumBgMan(sludgeTwoBiogas, temp = 30, 
                           id.name = "id", time.name = "time.d", 
-                          dat.name = "pres", comp.name = 'xCH4',
-                          temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,
+                          dat.name = "pres", comp.name = 'xCH4n',
+                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
-                          pres.amb = 101.3, absolute = FALSE,
+                          pres.amb = 1013, absolute = FALSE,
                           extrap = TRUE, addt0 = TRUE, 
-                          unit.pres = "kPa")
+                          unit.pres = "mbar")
 # cumBg()
-cum.prodc <- cumBg(sludgeTwoBiogasPres, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
+# NTS: Currently, 'longcombo' data requires comp to be stated as comp = comp. If not stated, this will result in removal of CH4 calculations and message according missing comp and comp.name.
+# NTS: No longer a problem for cumBgMan() (10 Sept 2019)
+cum.prodc <- cumBg(sludgeTwoBiogas, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
                           id.name = "id", time.name = "time.d", 
-                          dat.name = "pres", comp.name = 'xCH4',
-                          temp.init = 30, pres.resid = "pres.resid", pres.init = 0.0,
+                          dat.name = "pres", comp.name = 'xCH4n',
+                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
-                          pres.amb = 101.3, absolute = FALSE,
+                          pres.amb = 1013, absolute = FALSE,
                           extrap = TRUE, addt0 = TRUE, 
-                          unit.pres = "kPa")
+                          unit.pres = "mbar")
 
 # Compare results from cumBgMan() and cumBg()
 all_equal(cum.prodc.man, cum.prodc, ignore_col_order = FALSE,
           ignore_row_order = FALSE, convert = FALSE)
 
 # Plot results
-ggplot.1 <- ggplot(cum.prodc.man, aes(time.d, cvCH4, colour = id)) + 
+ggplot.1 <- ggplot(cum.prodc.man, aes(time.d, cvCH4, colour = factor(id))) + 
   geom_point() +
   geom_line(aes(group = id)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle id")  + 
   theme_bw() 
 
-ggplot.2 <- ggplot(cum.prodc, aes(time.d, cvCH4, colour = id)) + 
+ggplot.2 <- ggplot(cum.prodc, aes(time.d, cvCH4, colour = factor(id))) + 
   geom_point() +
   geom_line(aes(group = id)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle id")  + 
