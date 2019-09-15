@@ -70,18 +70,16 @@ cum.prodc.man <- cumBgMan(sludgeTwoBiogas, temp = 30,
                           temp.init = 30, pres.resid = 0, pres.init = 0.0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 1013, absolute = FALSE,
-                          extrap = TRUE, addt0 = TRUE, 
+                          extrap = FALSE, addt0 = TRUE, 
                           unit.pres = "mbar")
 # cumBg()
-# NTS: Currently, 'longcombo' data requires comp to be stated as comp = comp. If not stated, this will result in removal of CH4 calculations and message according missing comp and comp.name.
-# NTS: No longer a problem for cumBgMan() (10 Sept 2019)
 cum.prodc <- cumBg(sludgeTwoBiogas, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4n',
                           temp.init = 30, pres.resid = 0, pres.init = 0.0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 1013, absolute = FALSE,
-                          extrap = TRUE, addt0 = TRUE, 
+                          extrap = FALSE, addt0 = TRUE, 
                           unit.pres = "mbar")
 
 # Compare results from cumBgMan() and cumBg()
