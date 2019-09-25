@@ -3,7 +3,7 @@
 
 # Load data and functions
 # This command may be different for different users
-setwd('../../biogas-GH/')
+setwd('../../biogas-package-GH/')
 
 options(width = 70)
 
@@ -33,8 +33,8 @@ cpw <- cumBgVol(s3volw, comp = s3compw, temp = 25, pres = 1,
          dat.name = 'D', comp.name = 'D',
          extrap = TRUE)
 
-# long data structure
-cpl <- cumBgVol(s3lcombo, comp = s3compl, temp = 25, pres = 1,
+# Long data structure
+cpl <- cumBgVol(s3voll, comp = s3compl, temp = 25, pres = 1,
              data.struct = 'long',
              id.name = 'id', time.name = 'time.d',
              dat.name = 'vol.ml', comp.name = 'xCH4',
@@ -43,6 +43,39 @@ cpl <- cumBgVol(s3lcombo, comp = s3compl, temp = 25, pres = 1,
 head(cpc)
 head(cpw)
 head(cpl)
+
+# Test some options
+# Omit temp and pres
+cpc <- cumBgVol(s3lcombo, 
+             id.name = 'id', time.name = 'time.d',
+             dat.name = 'vol.ml', comp.name = 'xCH4',
+             extrap = TRUE)
+head(cpc)
+
+# Omit composition (no comp argument)
+# First for long
+cpl <- cumBgVol(s3voll, temp = 25, pres = 1,
+             data.struct = 'long',
+             id.name = 'id', time.name = 'time.d',
+             dat.name = 'vol.ml',
+             extrap = TRUE)
+head(cpl)
+# And longcombo data structure
+cpc <- cumBgVol(s3lcombo, temp = 25, pres = 1,
+             id.name = 'id', time.name = 'time.d',
+             dat.name = 'vol.ml', comp.name = NULL,
+             extrap = TRUE)
+head(cpc)
+
+# Omit comp for wide
+cpw <- cumBgVol(feedVol, temp = 0, pres = 1,
+                time.name = 'time.d',
+                data.struct = 'wide',
+                dat.name = '1',
+                dry = TRUE,
+                interval = FALSE)
+
+head(cpw)
 
 
 # Compare results from cumBgVol() and cumBg()

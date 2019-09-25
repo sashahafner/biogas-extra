@@ -82,6 +82,17 @@ cum.prodc <- cumBg(sludgeTwoBiogas, dat.type = 'pres', temp = 30, data.struct = 
                           extrap = FALSE, addt0 = TRUE, 
                           unit.pres = "mbar")
 
+# Test some options
+# Omit temp, should throw error
+cum.prodc.man <- cumBgMan(sludgeTwoBiogas, 
+                          id.name = "id", time.name = "time.d", 
+                          dat.name = "pres", comp.name = 'xCH4n',
+                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
+                          headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
+                          pres.amb = 1013, absolute = FALSE,
+                          extrap = FALSE, addt0 = TRUE, 
+                          unit.pres = "mbar")
+
 # Compare results from cumBgMan() and cumBg()
 all_equal(cum.prodc.man, cum.prodc, ignore_col_order = FALSE,
           ignore_row_order = FALSE, convert = FALSE)
