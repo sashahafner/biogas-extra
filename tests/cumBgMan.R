@@ -93,6 +93,34 @@ cum.prodc.man <- cumBgMan(sludgeTwoBiogas,
                           extrap = FALSE, addt0 = TRUE, 
                           unit.pres = "mbar")
 
+# Omit composition, should run with warning
+# First longcombo
+cum.prodc.man <- cumBgMan(sludgeTwoBiogas, temp = 30,
+                          id.name = "id", time.name = "time.d", 
+                          dat.name = "pres", comp.name = NULL,
+                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
+                          headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
+                          pres.amb = 1013, absolute = FALSE,
+                          extrap = FALSE, addt0 = TRUE, 
+                          unit.pres = "mbar")
+
+head(cum.prodc.man)
+
+# And long
+cum.prodl.man <- cumBgMan(strawPressure, temp = 31,
+                     data.struct = 'long',
+                     id.name = "bottle", time.name = "time", 
+                     dat.name = "pres", 
+                     temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0.0,
+                     headspace = strawSetup, vol.hs.name = "headspace",
+                     pres.amb = 101.3, absolute = FALSE,
+                     extrap = TRUE, addt0 = TRUE,
+                     unit.pres = "kPa")
+
+#options(warn = 2)
+#options(warn = 0)
+#traceback()
+
 # Compare results from cumBgMan() and cumBg()
 all_equal(cum.prodc.man, cum.prodc, ignore_col_order = FALSE,
           ignore_row_order = FALSE, convert = FALSE)
