@@ -2,6 +2,7 @@
 
 %%\usepackage[version=3]{mhchem} %chemical formulas
 \usepackage[colorlinks = true, urlcolor = blue]{hyperref}
+\emergencystretch 3em
 
 % Package to add subtitle to \maketitle
 \usepackage{etoolbox}
