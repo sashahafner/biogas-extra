@@ -13,46 +13,50 @@
 
 
 \title{Standardization of Biochemical Methane Potential Calculations in R}
-\subtitle{\vspace{0.3cm}Summary of an R\&D project}
-\author{Nanna L\o jborg}
+\subtitle{\vspace{0.3cm}Summary of a R\&D Project}
+\author{Nanna L\o jborg (AU ID: au519312)}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 
 \maketitle
 \section{Overview}
-The purpose of this document is to provide an overview of a R\&D project about standardization of biochemical methane potential calculations in R and what products resulted from this project.
+The purpose of this document is to provide an overview of a R\&D project about standardization of biochemical methane potential calculations in R and which products resulted from this project.
 
-In this R\&D project, I created two functions: one for processing manometric measurements and one for processing volumetric measurements. The idea with these functions was to simplify functions within the biogas package, making it easier for new biogas package users to work with and process their data. In the process of creating these functions, a third function (internal only) was created to enhance the simplification of each new function, including those that are written in the future. The purpose of the third function is to process (sorting and restructuring) all data prior to biogas calculations. To support the new functions, I created help files describing usage of the functions and R scripts for new example datasets (including associated help files) and test files to test the functions. Additionally, I have updated BMP methods documents for volumetric and manometric calculation to include example calculations.  
+In this R\&D project, I created two functions: one for processing manometric measurements and one for processing volumetric measurements. The idea with these functions was to simplify functions within the biogas package, making it easier for new biogas package users to work with and process their data. In the process of creating these functions, a third function (internal only) was created to enhance the simplification of each new function, including those that are written in the future. The purpose of the third function is to process (sorting and restructuring) all data prior to biogas calculations. To support the new functions, I created help files describing usage of the functions and R scripts for new example datasets (including associated help files) and test files to test the functions. Additionally, I have updated BMP-methods documents for volumetric and manometric calculations to include example calculations.  
 This document provides a brief description of the objective of this project and a summary of the work completed as part of the project.
 
 \section{Introduction}
-Biochemical methane potential (BMP) is an essential parameter in the biogas industry. BMP is a measure of the potential yield of methane (CH$_4$) from a substrate treated by anaerobic digestion and is used for substrate characterization (methane potential and anaerobic biodegradability of a given substrate) and can provide essential knowledge about effects of pre-treatment. Several approaches are available for measuring BMP by monitoring the production of biogas including gravimetric, manometric, volumetric, and gas density methods \cite{filer_BMP_2019}. Each method requires a specific set of calculations to go from raw measurements to standardized CH$_4$ volume, which can then be used to calculate BMP. This R\&D project focused on standardization of BMP calculations and refinement of a software tool for BMP data processing.
+Biochemical methane potential (BMP) is an essential parameter in the biogas industry. BMP is a measure of the potential yield of methane (CH$_4$) from a substrate treated by anaerobic digestion and it is used for substrate characterization (methane potential and anaerobic biodegradability of a given substrate) and can provide essential knowledge about effects of pre-treatment. Several approaches are available for measuring BMP by monitoring the production of biogas including gravimetric, manometric, volumetric, and gas density methods \cite{filer_BMP_2019}. Each method requires a specific set of calculations to go from raw measurements to standardized CH$_4$ volume, which can then be used to calculate BMP. This R\&D project focused on standardization of BMP calculations and refinement of a software tool for BMP data processing.
 
-Results from a recent large inter-laboratory comparison of BMP measurement show that manual volumetric and manometric measurements of biogas production in laboratory experiments are handled differently from one laboratory to another. These different calculation approaches have shown to give minor deviations (up to about 10 percentage in results from the same measurements.
+Results from a recent large inter-laboratory comparison of BMP measurement showed that manual volumetric and manometric measurements of biogas production in laboratory experiments are handled differently from one laboratory to another. These different calculation approaches have shown to give minor deviations (up to about 10 percentage in results from the same measurements.
 
-The aim of the project was to create and test volumetric and manometric BMP functions for R, the popular open-source software environment for statistical computing. These developments included writing new and improving functions within the already existing biogas package. Testing included writing R scripts for example datasets from existing Excel sheets (creating csv and Rda files), evaluating results visually, and comparing qualitatively and quantitative with the existing \texttt{cumBg} function through analysis of existing data and newly created Rda files.  
+The aim of the project was to create and test volumetric and manometric BMP functions for R, the popular open-source software environment for statistical computing. These developments included writing new improved functions within the already existing biogas package. Testing included writing R scripts for example datasets from existing Excel sheets (creating csv and Rda files), evaluating results visually, and comparing qualitatively and quantitatively with the existing \texttt{cumBg} function through analysis of existing data and newly created Rda files.  
 
 \section{Objectives}
-In order to eliminate above mentioned completely avoidable deviations resulting from application of different calculation approaches, a set of standard approaches for calculations is essential. Documentation of a standardized mathematical approach for calculations used for at least one measurement method was one objective of this project.
+In order to eliminate above mentioned avoidable deviations resulting from application of different calculation approaches, a set of standard approaches for calculations is essential. Documentation of a standardized mathematical approach for calculations used for at least one measurement method was one objective of this project.
 
-A newly developed software package for biogas calculations, known as the biogas package, has been available for the R environment since 2015 \cite{softwarex}. This package address issues with time-consuming calculations and lack of reproducible among laboratories for obtaining BMP.
-The biogas package consists of ten function including \texttt{cumBg()}, which is used for processing all the types of BMP measurements listed above. The resulting biogas and methane production values and production rates can be further used to calculate BMP. \texttt{cumBg()} is a large and rather somewhat complex function, which requires some proficiency in R for use. Furthermore, \texttt{cumBg()} is difficult to improve or debug. 
+A newly developed software package for biogas calculations, known as the biogas package, has been available for the R environment since 2015 \cite{softwarex}. This package address issues with time-consuming calculations and lack of reproducibility among laboratories for obtaining BMP.
+The biogas package consists of ten function including \texttt{cumBg()}, which is used for processing all the types of BMP measurements listed above. The resulting biogas and methane production values and production rates can be further used to calculate BMP. \texttt{cumBg()} is a large and rather complex function, which requires some proficiency in R to use. Furthermore, \texttt{cumBg()} is difficult to improve or debug. 
 A second objective of this project was the development of simpler method-specific versions of the \texttt{cumBg()} function: one for volumetric data and one for manometric data.
 
 A complete list of project objectives is shown below:
 \begin{itemize}
   \item Contribute to documentation of calculation methods through example calculations.
-  \item Develop new R functions for calculation biogas and methane production and production rates from volumetric and manometric BMP measurements.
+  \item Develop new R functions for calculation of biogas and methane production and production rates from volumetric and manometric BMP measurements.
   \item Create related files for testing and documentation of the new functions
 \end{itemize}
 
-\section{Project summary}
-In total, in this project I created: three new R functions and two associated help files, two new R scripts to test functions, four new R datasets from existing Excel files and four associated help files, two vignettes to describe the new functions, and I also contributed new example calculations to two documents on BMP methods. A complete list is shown below (Table \ref{tab:products}). For most documents, existing files were used as a starting point or template for creating the new files: \texttt{cumBg()} was the starting point for \texttt{cumBgVol()}, \texttt{cumBgMan()}, and \texttt{cumBgDataPrep()} and \texttt{biogas\_quick\_start.Rnw} was used as a template for the two vignettes \texttt{cumBgVol\_function.Rnw} and \texttt{cumBgMan\_function.Rnw}. Furthermore, the already existing R scripts for example datasets and help files, were used as template for creating the new datasets and help files, to maintain the same setup and design within the biogas package.  
+\section{Project Summary}
+In total, in this project, I created: three new R functions and two associated help files, two new R scripts to test functions, four new R datasets from existing Excel files and four associated help files, two vignettes to describe the new functions, and I also contributed new example calculations to two documents on BMP-methods. A complete list is shown below (Table \ref{tab:products}). Functions, data (Rda files), help files, and the two vignettes can be found in the biogas repository in GitHub (git@github.com:sashahafner/biogas.git). Test files and data creation files (Excel sheet and R scripts for conversion to csv and Rda) can be found in the biogas-extra repository in GitHub (git@github.com:sashahafner/biogas-extra.git). New example calculations in the two documents on BMP-methods can be found in the BMP-methods repository in GitHub (git@github.com:sashahafner/BMP-methods.git).    
 
-\subsection{Project products}
+For most documents, existing files were used as a starting point or template for creating the new files: \texttt{cumBg()} was the starting point for \texttt{cumBgVol()}, \texttt{cumBgMan()}, and \texttt{cumBgDataPrep()} and \texttt{biogas\_quick\_start.Rnw} was used as a template for the two vignettes \texttt{cumBgVol\_function.Rnw} and \texttt{cumBgMan\_function.Rnw}. Furthermore, the already existing R scripts for example datasets and help files, were used as template for creating the new datasets and help files, to maintain the same setup and design within the biogas package.  
+
+\subsection{Project Products}
 The most significant products were the two new functions for calculation of biogas and methane production and production rates from volumetric and manometric BMP measurements. These functions are described in detail (including relevant examples) in two separate vignettes.
-This document (project summary) and the two above mentioned vignettes were submitted in lieu of a more classical report. 
+This document (project summary) and the two above mentioned vignettes were submitted in lieu of a more classical report.
+The products 
+
 
 \label{products}
 \begin{table}[!h]
@@ -82,8 +86,8 @@ This document (project summary) and the two above mentioned vignettes were submi
     Help file for \texttt{sludgeTwoSetup()}       &   \texttt{cumBgVol.Rd} \\
     Help file for \texttt{feedVol()}              &   \texttt{feedVol} \\
     Help file for \texttt{feedSetup()}            &   \texttt{feedSetup} \\
-    Example calc. in BMP methods documents        &   \texttt{volumetric\_calculations.tex} \\
-    Example calc. in BMP methods documents        &   \texttt{manometric\_calculations.tex} \\
+    Example calc. in BMP-methods documents        &   \texttt{volumetric\_calculations.tex} \\
+    Example calc. in BMP-methods documents        &   \texttt{manometric\_calculations.tex} \\
     \hline
   \end{tabular}
   \end{center}
