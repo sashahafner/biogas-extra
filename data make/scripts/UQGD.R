@@ -39,7 +39,7 @@ UQGDSetup <- setup
 save(UQGDSetup, file = '../output rda/UQGDSetup.rda')
 
 UQGDBiogas <- biogas
-save(UQGDbiogas, file = '../output rda/UQGDBiogas.rda')
+save(UQGDBiogas, file = '../output rda/UQGDBiogas.rda')
 
 ## Test biogas calculations
 #library(biogas)
