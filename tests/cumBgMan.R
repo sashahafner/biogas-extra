@@ -17,43 +17,116 @@ library(ggplot2)
 library(gridExtra)
 library(dplyr)
 
+head(sludgeTwoBiogas)
+head(sludgeTwoSetup)
+
+# Calculate cumulative production and rates 
+# Pressure is gauge (not absolute) so absolute argument needed
+# Data structure is default of longcombo
+cbg <- calcBgMan(sludgeTwoBiogas, temp = 30,
+                 id.name = "id", time.name = "time.d", 
+                 pres.name = "pres", comp.name = "xCH4n",
+                 temp.init = 30, pres.resid = 0, pres.init = 0,
+                 headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
+                 pres.amb = 1013, absolute = FALSE,
+                 unit.pres = "mbar")
+head(cbg)
+
+# Plot results
+\dontrun{
+  # Not run just because it is a bit slow
+  library(ggplot2)
+
+  ggplot(cbg, aes(time.d, cvCH4, colour = factor(id))) + 
+    geom_point() +
+    geom_line(aes(group = id)) +
+    labs(x = "Time (d)", y = "Cumulative methane production  (mL)", colour = "Bottle id")  + 
+    theme_bw() 
+}
+
+# This sludgeTwoBiogas dataset has original xCH4 as well as normalized values
+# So "method 2" can also be used by changing comp.name and cmethod arguments
+cbg2 <- calcBgMan(sludgeTwoBiogas, temp = 30,
+                  id.name = "id", time.name = "time.d", 
+                  pres.name = "pres", comp.name = "xCH4",
+                  temp.init = 30, pres.resid = 0, pres.init = 0,
+                  headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
+                  pres.amb = 1013, cmethod = 'total', absolute = FALSE,
+                  unit.pres = "mbar")
+head(cbg2)
+
+# Compare
+quantile(cbg2$vCH4 - cbg$vCH4)
+# Median difference of 0.2 mL
+
+# Example with long structured input data frame
+data("strawPressure")
+data("strawComp")
+data("strawSetup")
+
+# Need to specify data structure with \code{data.struct} argument
+# Using default values for time.name, pres.name
+cbg <- calcBgMan(strawPressure, comp = strawComp, temp = 31,
+                 data.struct = "long",
+                 id.name = "bottle", comp.name = "xCH4",
+                 temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0,
+                 headspace = strawSetup, vol.hs.name = "headspace",
+                 pres.amb = 101.3, absolute = FALSE,
+                 unit.pres = "kPa")
+
+# Because of missing composition measurements at last time for some bottles
+# CH4 volume will be missing
+# Can estimate xCH4 here by extrapolation using argument of same name
+
+cbg2 <- calcBgMan(strawPressure, comp = strawComp, temp = 31,
+                 data.struct = "long",
+                 id.name = "bottle", comp.name = "xCH4",
+                 temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0,
+                 headspace = strawSetup, vol.hs.name = "headspace",
+                 pres.amb = 101.3, absolute = FALSE, 
+                 extrap = TRUE, unit.pres = "kPa")
+
+
+# For example with wide structured input data frame cumBgVol() help file
+
+---------------------
 # cumBgMan() test 'long' data structure
-cum.prodl.man <- cumBgMan(strawPressure, comp = strawComp, temp = 31,
+cbgl.man <- cumBgMan(strawPressure, comp = strawComp, temp = 31,
                      data.struct = 'long',
                      id.name = "bottle", time.name = "time", 
                      dat.name = "pres", comp.name = "xCH4",
-                     temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0.0,
+                     temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0,
                      headspace = strawSetup, vol.hs.name = "headspace",
                      pres.amb = 101.3, absolute = FALSE,
                      extrap = TRUE, addt0 = TRUE,
                      unit.pres = "kPa")
 
-head(cum.prodl.man)
+head(cbgl.man)
 
 # cumBg() same data
-cum.prodl <- cumBg(strawPressure, dat.type = "pres", comp = strawComp, temp = 31,
+cbgl <- cumBg(strawPressure, dat.type = "pres", comp = strawComp, temp = 31,
       id.name = "bottle", time.name = "time",
       dat.name = "pres", comp.name = "xCH4",
-      temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0.0,
+      temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0,
       headspace = strawSetup, vol.hs.name = "headspace",
       pres.amb = 101.3, absolute = FALSE,
       extrap = TRUE, addt0 = TRUE,
       unit.pres = "kPa")
 
-head(cum.prodl)
+head(cbgl)
 
 # Compare results from cumBgMan() and cumBg()
-all_equal(cum.prodl.man, cum.prodl, ignore_col_order = FALSE,
+all_equal(cbgl.man, cbgl, ignore_col_order = FALSE,
           ignore_row_order = FALSE, convert = FALSE)
 
 # Plot results
-ggplot.1 <- ggplot(cum.prodl.man, aes(time, cvCH4, colour = factor(bottle))) + 
+ggplot.1 <- ggplot(cbgl.man, aes(time, cvCH4, colour = factor(bottle))) + 
   geom_point() +
   geom_line(aes(group = bottle)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle no.")  + 
   theme_bw() 
 
-ggplot.2 <- ggplot(cum.prodl, aes(time, cvCH4, colour = factor(bottle))) + 
+ggplot.2 <- ggplot(cbgl, aes(time, cvCH4, colour = factor(bottle))) + 
   geom_point() +
   geom_line(aes(group = bottle)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle no.")  + 
@@ -64,19 +137,19 @@ grid.arrange(ggplot.1, ggplot.2, ncol=1)
 
 # Sludge data. Longcombo data structure.
 # cumBgMan()
-cum.prodc.man <- cumBgMan(sludgeTwoBiogas, temp = 30, 
+cbgc.man <- cumBgMan(sludgeTwoBiogas, temp = 30, 
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4n',
-                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
+                          temp.init = 30, pres.resid = 0, pres.init = 0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 1013, absolute = FALSE,
                           extrap = FALSE, addt0 = TRUE, 
                           unit.pres = "mbar")
 # cumBg()
-cum.prodc <- cumBg(sludgeTwoBiogas, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
+cbgc <- cumBg(sludgeTwoBiogas, dat.type = 'pres', temp = 30, data.struct = 'longcombo',
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4n',
-                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
+                          temp.init = 30, pres.resid = 0, pres.init = 0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 1013, absolute = FALSE,
                           extrap = FALSE, addt0 = TRUE, 
@@ -84,10 +157,10 @@ cum.prodc <- cumBg(sludgeTwoBiogas, dat.type = 'pres', temp = 30, data.struct = 
 
 # Test some options
 # Omit temp, should throw error
-cum.prodc.man <- cumBgMan(sludgeTwoBiogas, 
+cbgc.man <- cumBgMan(sludgeTwoBiogas, 
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = 'xCH4n',
-                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
+                          temp.init = 30, pres.resid = 0, pres.init = 0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 1013, absolute = FALSE,
                           extrap = FALSE, addt0 = TRUE, 
@@ -95,23 +168,23 @@ cum.prodc.man <- cumBgMan(sludgeTwoBiogas,
 
 # Omit composition, should run with warning
 # First longcombo
-cum.prodc.man <- cumBgMan(sludgeTwoBiogas, temp = 30,
+cbgc.man <- cumBgMan(sludgeTwoBiogas, temp = 30,
                           id.name = "id", time.name = "time.d", 
                           dat.name = "pres", comp.name = NULL,
-                          temp.init = 30, pres.resid = 0, pres.init = 0.0,
+                          temp.init = 30, pres.resid = 0, pres.init = 0,
                           headspace = sludgeTwoSetup, vol.hs.name = "vol.hs",
                           pres.amb = 1013, absolute = FALSE,
                           extrap = FALSE, addt0 = TRUE, 
                           unit.pres = "mbar")
 
-head(cum.prodc.man)
+head(cbgc.man)
 
 # And long
-cum.prodl.man <- cumBgMan(strawPressure, temp = 31,
+cbgl.man <- cumBgMan(strawPressure, temp = 31,
                      data.struct = 'long',
                      id.name = "bottle", time.name = "time", 
                      dat.name = "pres", 
-                     temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0.0,
+                     temp.init = 21.55, pres.resid = "pres.resid", pres.init = 0,
                      headspace = strawSetup, vol.hs.name = "headspace",
                      pres.amb = 101.3, absolute = FALSE,
                      extrap = TRUE, addt0 = TRUE,
@@ -122,17 +195,17 @@ cum.prodl.man <- cumBgMan(strawPressure, temp = 31,
 #traceback()
 
 # Compare results from cumBgMan() and cumBg()
-all_equal(cum.prodc.man, cum.prodc, ignore_col_order = FALSE,
+all_equal(cbgc.man, cbgc, ignore_col_order = FALSE,
           ignore_row_order = FALSE, convert = FALSE)
 
 # Plot results
-ggplot.1 <- ggplot(cum.prodc.man, aes(time.d, cvCH4, colour = factor(id))) + 
+ggplot.1 <- ggplot(cbgc.man, aes(time.d, cvCH4, colour = factor(id))) + 
   geom_point() +
   geom_line(aes(group = id)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle id")  + 
   theme_bw() 
 
-ggplot.2 <- ggplot(cum.prodc, aes(time.d, cvCH4, colour = factor(id))) + 
+ggplot.2 <- ggplot(cbgc, aes(time.d, cvCH4, colour = factor(id))) + 
   geom_point() +
   geom_line(aes(group = id)) +
   labs(x = "Time [d]", y = "cvCH4  [mL]", colour = "Bottle id")  + 
