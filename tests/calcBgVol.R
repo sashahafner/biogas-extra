@@ -3,14 +3,14 @@
 
 # Load data and functions
 # This command may be different for different users
-setwd('../../biogas-package-GH/')
+setwd('../../biogas/')
 
 options(width = 70)
 
-files <- list.files('biogas/R', full.names = TRUE)
+files <- list.files('R', full.names = TRUE)
 for(i in files) source(i)
 
-files <- list.files('biogas/data', full.names = TRUE)
+files <- list.files('data', full.names = TRUE)
 for(j in files) load(j)
 
 # Required packages
