@@ -1,6 +1,5 @@
 # Sort data and then creates CSV files
 # Nanna Løjborg and Sasha D. Hafner
-# 26 August 2019
 
 library(plyr)
 library(readxl)
@@ -13,6 +12,7 @@ setup[is.na(setup)] <- 0
 
 colnames(setup)
 names(setup)[names(setup) == "Bottle key"] <- "id"
+names(setup)[names(setup) == "Substrate"] <- "descrip"
 names(setup)[names(setup) == "Inoculum mass (g)"] <- "m.inoc"
 names(setup)[names(setup) == "Substrate VS mass (g)"] <- "m.sub.vs"
 
@@ -44,16 +44,16 @@ write.csv(vol, '../output csv/DBFZ_feed_vol.csv', row.names = FALSE)
 
 # Make rda file
 # Setup
-setup <- setup[ , c('id', 'm.inoc', 'm.sub.vs')]
+setup <- setup[ , c('id', 'descrip', 'm.inoc', 'm.sub.vs')]
 
 class(setup)
 setup <- as.data.frame(setup)
 
-DBFZfeedSetup <- setup
+feedSetup <- setup
 
-save(DBFZfeedSetup, file = '../output rda/DBFZfeedSetup.rda')
+save(feedSetup, file = '../output rda/feedSetup.rda')
 
 # Vol
-DBFZfeedVol <- vol
+feedVol <- vol
 
-save(DBFZfeedVol, file = '../output rda/DBFZfeedVol.rda')
+save(feedVol, file = '../output rda/feedVol.rda')
